@@ -1,6 +1,9 @@
 package weixin
 
-import "github.com/arstd/log"
+import (
+	"github.com/arstd/log"
+	"net/http"
+)
 
 // 各类消息处理器
 var (
@@ -50,7 +53,7 @@ var EventDefaultHandler = func(msg *Message) (reply ReplyMsg) {
 }
 
 // HandleMessage 处理各类消息
-func HandleMessage(msg *Message) (ret ReplyMsg) {
+func HandleMessage(w http.ResponseWriter, r *http.Request, msg *Message) (ret ReplyMsg) {
 	log.Debugf("process `%s` message", msg.MsgType)
 
 	switch msg.MsgType {
@@ -83,7 +86,7 @@ func HandleMessage(msg *Message) (ret ReplyMsg) {
 			return RecvLinkHandler(NewRecvLink(msg))
 		}
 	case MsgTypeEvent:
-		return HandleEvent(msg)
+		return HandleEvent(w,r,msg)
 	default:
 		log.Errorf("unexpected receive MsgType: %s", msg.MsgType)
 		return nil
@@ -93,17 +96,17 @@ func HandleMessage(msg *Message) (ret ReplyMsg) {
 }
 
 // HandleEvent 处理各类事件
-func HandleEvent(msg *Message) (reply ReplyMsg) {
+func HandleEvent(w http.ResponseWriter, r *http.Request, msg *Message) (reply ReplyMsg) {
 	log.Debugf("process `%s` event", msg.MsgType)
 
 	switch msg.Event {
 	case EventTypeSubscribe:
 		if EventSubscribeHandler != nil {
-			return EventSubscribeHandler(NewEventSubscribe(msg))
+			return EventSubscribeHandler(NewEventSubscribe(w,r, msg))
 		}
 	case EventTypeUnsubscribe:
 		if EventUnsubscribeHandler != nil {
-			return EventUnsubscribeHandler(NewEventSubscribe(msg))
+			return EventUnsubscribeHandler(NewEventSubscribe(w, r, msg))
 		}
 	case EventTypeLocation:
 		if EventLocationHandler != nil {

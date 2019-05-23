@@ -59,7 +59,7 @@ func processMessage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 处理消息
-	reply := HandleMessage(msg)
+	reply := HandleMessage(w, r, msg)
 
 	// 如果返回为 nil，则默认返回""
 	ret := []byte("")
