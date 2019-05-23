@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/arstd/log"
-	"github.com/arstd/weixin"
+	"github.com/jqiris/weixin"
 )
 
 // EventDefaultHandler 注册默认处理器

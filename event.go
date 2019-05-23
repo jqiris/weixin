@@ -1,6 +1,9 @@
 package weixin
 
-import "github.com/arstd/log"
+import (
+	"github.com/arstd/log"
+	"net/http"
+)
 
 // EventType 事件类型
 type EventType string
@@ -21,12 +24,12 @@ type EventBase struct {
 }
 
 // NewRecvEvent 把通用 struct 转化成相应类型的 struct
-func NewRecvEvent(msg *Message) RecvEvent {
+func NewRecvEvent(w http.ResponseWriter, r *http.Request,msg *Message) RecvEvent {
 	switch msg.Event {
 	case EventTypeSubscribe:
-		return NewEventSubscribe(msg)
+		return NewEventSubscribe(w, r, msg)
 	case EventTypeUnsubscribe:
-		return NewEventSubscribe(msg)
+		return NewEventSubscribe(w, r, msg)
 	case EventTypeLocation:
 		return NewEventLocation(msg)
 	case EventTypeClick:
