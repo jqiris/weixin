@@ -1,7 +1,5 @@
 package weixin
 
-import "net/http"
-
 // 微信支持的事件类型
 const (
 	EventTypeSubscribe             EventType = "subscribe"
@@ -27,7 +25,7 @@ type EventSubscribe struct {
 }
 
 // NewEventSubscribe 把通用 struct 转化成相应类型的 struct
-func NewEventSubscribe(w http.ResponseWriter, r *http.Request, m *Message) *EventSubscribe {
+func NewEventSubscribe(m *Message) *EventSubscribe {
 	return &EventSubscribe{
 		EventBase: EventBase{nil, m.ToUserName, m.FromUserName, m.CreateTime, m.MsgType, m.Event},
 		EventKey:  m.EventKey,

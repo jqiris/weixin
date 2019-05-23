@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/arstd/log"
 	"github.com/jqiris/weixin"
@@ -24,7 +25,7 @@ func EventDefaultHandler(m *weixin.Message) weixin.ReplyMsg {
 }
 
 // EventSubscribeHandler 注册关注事件处理器
-func EventSubscribeHandler(m *weixin.EventSubscribe) weixin.ReplyMsg {
+func EventSubscribeHandler(w http.ResponseWriter, r *http.Request, m *weixin.EventSubscribe) weixin.ReplyMsg {
 	log.Debugf("%+v", m)
 
 	// echo message

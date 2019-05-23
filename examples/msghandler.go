@@ -2,16 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
-
 	"github.com/arstd/log"
 	"github.com/jqiris/weixin"
 )
 
-func defaultHandler(w http.ResponseWriter, r *http.Request, msg *weixin.Message) weixin.ReplyMsg {
+func defaultHandler(msg *weixin.Message) weixin.ReplyMsg {
 	log.Debugf("%+v", msg)
 
-	event := weixin.NewRecvEvent(w, r, msg)
+	event := weixin.NewRecvEvent(msg)
 	js, _ := json.Marshal(event)
 
 	// echo message
