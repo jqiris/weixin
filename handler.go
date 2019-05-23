@@ -41,7 +41,7 @@ var (
 )
 
 // RecvDefaultHandler 如果没有注册某类消息处理器，那么收到这类消息时，使用这个默认处理器
-var RecvDefaultHandler = func(msg *Message) (reply ReplyMsg) {
+var RecvDefaultHandler = func(w http.ResponseWriter, r *http.Request, msg *Message) (reply ReplyMsg) {
 	log.Debugf("unregistered receive message handler %s, use RecvDefaultHandler", msg.MsgType)
 	return nil
 }
@@ -92,7 +92,7 @@ func HandleMessage(w http.ResponseWriter, r *http.Request, msg *Message) (ret Re
 		return nil
 	}
 
-	return RecvDefaultHandler(msg)
+	return RecvDefaultHandler(w, r, msg)
 }
 
 // HandleEvent 处理各类事件
